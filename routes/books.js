@@ -21,8 +21,24 @@ router.route('/')
             next(e);
         }
     })
-    // .patch()
-    // .delete();
+    .patch((req, res, next) => {
+        try {
+            res.json(books.update(req.body));
+        }
+        catch (e) {
+            console.error('Error while updating book: ', e.message);
+            next(e);
+        }
+    })
+    .delete((req, res, next) => {
+        try {
+            res.json(books.remove(req.body));
+        }
+        catch (e) {
+            console.error('Error while deleting book: ', e.message);
+            next(e);
+        }
+    });
 
 router.route('/:id')
     .get((req, res) => {

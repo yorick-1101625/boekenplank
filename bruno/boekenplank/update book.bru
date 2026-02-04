@@ -1,0 +1,20 @@
+meta {
+  name: update book
+  type: http
+  seq: 3
+}
+
+patch {
+  url: 127.0.0.1:3000/books
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": 1,
+    "title": "Updated title",
+    "isbn": "123",
+    "author": "abc"
+  }
+}
