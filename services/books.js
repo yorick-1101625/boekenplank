@@ -6,6 +6,19 @@ function getMany() {
     return data;
 }
 
+function create(bookObj) {
+    const { title, isbn, author } = bookObj;
+    const result = db.run('INSERT INTO books (title, isbn, author) VALUES (@title, @isbn, @author)', {title, isbn, author});
+
+    let message = 'Error in creating book';
+    if (result.changes) {
+        message = 'Book created successfully';
+    }
+
+    return message;
+}
+
 module.exports = {
-    getMany
+    getMany,
+    create
 }

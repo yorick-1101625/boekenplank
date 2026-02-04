@@ -12,9 +12,14 @@ router.route('/')
             next(e);
         }
     })
-    .post((req, res) => {
-        console.log(req.body)
-        res.status(200).json(req.body)
+    .post((req, res, next) => {
+        try {
+            res.json(books.create(req.body));
+        }
+        catch (e) {
+            console.error('Error while adding book: ', e.message);
+            next(e);
+        }
     })
     // .patch()
     // .delete();

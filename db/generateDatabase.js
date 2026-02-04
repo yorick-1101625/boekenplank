@@ -2,6 +2,7 @@ const sqlite = require('better-sqlite3');
 const path = require('path');
 
 const db = new sqlite(path.resolve('db/books.db'),{fileMustExist: true});
+db.prepare('DROP TABLE IF EXISTS books').run();
 
 db.prepare(`
     CREATE TABLE books (

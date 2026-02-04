@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "devStart": "nodemon server.js",
+    "dev": "nodemon server.js",
     "gendb": "node ./db/generateDatabase.js"
   },
   "dependencies": {
