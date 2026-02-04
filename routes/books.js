@@ -1,10 +1,16 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const books = require('../services/books');
 
 router.route('/')
-    .get((req, res) => {
-
-        res.json({data: ['book 1', 'book 2']});
+    .get((req, res, next) => {
+        try {
+            res.json(books.getMany());
+        }
+        catch (e) {
+            console.error('Error while getting books: ', e.message);
+            next(e);
+        }
     })
     .post((req, res) => {
         console.log(req.body)

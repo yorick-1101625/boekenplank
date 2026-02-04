@@ -15,9 +15,11 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "gendb": "node ./db/generateDatabase.js"
   },
   "dependencies": {
+    "better-sqlite3": "^12.6.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
