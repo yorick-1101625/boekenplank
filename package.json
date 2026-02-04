@@ -1,0 +1,26 @@
+{
+  "name": "boekenplank",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/yorick-1101625/boekenplank#readme",
+  "bugs": {
+    "url": "https://github.com/yorick-1101625/boekenplank/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yorick-1101625/boekenplank.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
