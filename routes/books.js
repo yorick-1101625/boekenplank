@@ -1,6 +1,8 @@
 const express = require('express');
-const router = express.Router();
 const books = require('../services/books');
+
+const router = express.Router();
+
 
 router.route('/')
     .get((req, res, next) => {
@@ -17,7 +19,7 @@ router.route('/')
             res.json(books.create(req.body));
         }
         catch (e) {
-            console.error('Error while adding book: ', e.message);
+            console.error('Error while creating book: ', e.message);
             next(e);
         }
     })

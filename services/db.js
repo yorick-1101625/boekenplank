@@ -3,11 +3,11 @@ const path = require('path');
 
 const db = new sqlite(path.resolve('db/books.db'),{fileMustExist: true});
 
-function query(sql, params) {
+function query(sql, params = {}) {
     return db.prepare(sql).all(params);
 }
 
-function run(sql, params) {
+function run(sql, params = {}) {
     return db.prepare(sql).run(params);
 }
 
