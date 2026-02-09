@@ -8,7 +8,10 @@ function errorHandler(err, req, res, _) {
             "code": code,
             "message": err.message,
             "timestamp": Date.now(),
-            "details": err.details,
+            "details": err.details
+        },
+        "meta": {
+            "request_id": req.id
         }
     })
 }

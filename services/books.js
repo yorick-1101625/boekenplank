@@ -2,9 +2,11 @@ const db = require('../services/db');
 const ApiError = require('../errors/ApiError');
 
 function getMany() {
-    const data = db.query('SELECT * FROM books');
+    return db.query('SELECT * FROM books');
+}
 
-    return data;
+function getOne(bookId) {
+    return db.query('SELECT * FROM books WHERE id = @bookId', {bookId});
 }
 
 function validateBook(bookObj) {
@@ -86,6 +88,7 @@ function remove(bookId) {
 
 module.exports = {
     getMany,
+    getOne,
     create,
     update,
     remove

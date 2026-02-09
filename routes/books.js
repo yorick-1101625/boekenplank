@@ -7,7 +7,12 @@ const router = express.Router();
 router.route('/')
     .get((req, res, next) => {
         try {
-            res.json(books.getMany());
+            res.json({
+                "data": books.getMany(),
+                "meta": {
+                    "request_id": req.id
+                }
+            });
         }
         catch (e) {
             next(e);
@@ -15,19 +20,30 @@ router.route('/')
     })
     .post((req, res, next) => {
         try {
-            res.json(books.create(req.body));
+            res.json({
+                "data": books.create(req.body),
+                "meta": {
+                    "request_id": req.id
+                }
+            });
         }
         catch (e) {
             next(e);
         }
-    })
+    });
 
 
 
 router.route('/:id')
     .get((req, res, next) => {
         try {
-            res.json({id: req.params.id});
+            res.json({
+                "data": books.getOne(req.params.id),
+                "meta": {
+                    "request_id": req.id
+                }
+            });
+
         }
         catch (e) {
             next(e);
@@ -35,7 +51,12 @@ router.route('/:id')
     })
     .put((req, res, next) => {
         try {
-            res.json(books.update(req.params.id, req.body));
+            res.json({
+                "data": books.update(req.params.id, req.body),
+                "meta": {
+                    "request_id": req.id
+                }
+            });
         }
         catch (e) {
             next(e);
@@ -43,7 +64,13 @@ router.route('/:id')
     })
     .delete((req, res, next) => {
         try {
-            res.json(books.remove(req.params.id));
+            res.json({
+                "data": books.remove(req.params.id),
+                "meta": {
+                    "request_id": req.id
+                }
+            });
+
         }
         catch (e) {
             next(e);
