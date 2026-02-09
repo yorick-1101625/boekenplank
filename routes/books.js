@@ -10,7 +10,6 @@ router.route('/')
             res.json(books.getMany());
         }
         catch (e) {
-            console.error('Error while getting books: ', e.message);
             next(e);
         }
     })
@@ -19,33 +18,36 @@ router.route('/')
             res.json(books.create(req.body));
         }
         catch (e) {
-            console.error('Error while creating book: ', e.message);
             next(e);
         }
     })
-    .patch((req, res, next) => {
+
+
+
+router.route('/:id')
+    .get((req, res, next) => {
         try {
-            res.json(books.update(req.body));
+            res.json({id: req.params.id});
         }
         catch (e) {
-            console.error('Error while updating book: ', e.message);
+            next(e);
+        }
+    })
+    .put((req, res, next) => {
+        try {
+            res.json(books.update(req.params.id, req.body));
+        }
+        catch (e) {
             next(e);
         }
     })
     .delete((req, res, next) => {
         try {
-            res.json(books.remove(req.body));
+            res.json(books.remove(req.params.id));
         }
         catch (e) {
-            console.error('Error while deleting book: ', e.message);
             next(e);
         }
     });
-
-router.route('/:id')
-    .get((req, res) => {
-        res.json({id: req.params.id});
-    })
-    // .put()
 
 module.exports = router;

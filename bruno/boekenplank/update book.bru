@@ -4,15 +4,14 @@ meta {
   seq: 3
 }
 
-patch {
-  url: 127.0.0.1:3000/books
+put {
+  url: 127.0.0.1:3000/books/3
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "id": 8,
     "title": "Updated title",
     "isbn": "123",
     "author": "abc"

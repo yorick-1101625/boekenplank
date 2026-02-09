@@ -8,20 +8,22 @@ function getMany() {
 }
 
 function validateBook(bookObj) {
-    if (!bookObj) {
-        throw new ApiError("No body found.", 400, "invalid_argument");
-    }
+    let details = [];
 
     if (!bookObj.title) {
-        throw new ApiError("No title found.", 400, "invalid_argument");
+        details.push({ field: "title", reason: "Title is required." });
     }
 
     if (!bookObj.isbn) {
-        throw new ApiError("No ISBN found.", 400, "invalid_argument");
+        details.push({ field: "isbn", reason: "ISBN is required." });
     }
 
     if (!bookObj.author) {
-        throw new ApiError("No author found.", 400, "invalid_argument");
+        details.push({ field: "author", reason: "Author is required." });
+    }
+
+    if (details.length > 0) {
+        throw new ApiError("Missing required fields", 422, "VALIDATION_ERROR", details);
     }
 }
 
@@ -31,53 +33,52 @@ function create(bookObj) {
 
     const isbnExists = db.query('SELECT * FROM books WHERE isbn = @isbn', {isbn});
     if (isbnExists && isbnExists.length > 0) {
-        throw new ApiError("Book with this ISBN already exists.", 400, "invalid_argument");
+        throw new ApiError("Book with this ISBN already exists.", 409, "ISBN_ALREADY_EXISTS");
     }
 
     const result = db.run('INSERT INTO books (title, isbn, author) VALUES (@title, @isbn, @author)', {title, isbn, author});
 
     if (!result.changes) {
-        throw new ApiError("Unexpected error while creating book.", 500, "internal_server_error");
+        throw new ApiError("Unexpected error while creating book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
     return true;
 }
 
-function update(bookObj) {
+function update(bookId, bookObj) {
     validateBook(bookObj);
-    const { title, isbn, author, id } = bookObj;
+    const { title, isbn, author } = bookObj;
 
-    const bookExists = db.query('SELECT * FROM books WHERE id = @id', {id});
+    const bookExists = db.query('SELECT * FROM books WHERE id = @bookId', {bookId});
     if (!bookExists || bookExists.length === 0) {
-        throw new ApiError(`Book with id ${id} does not exist.`, 400, "invalid_argument");
+        throw new ApiError(`Book with id '${bookId}' does not exist.`, 400, "RESOURCE_NOT_FOUND");
     }
 
-    const result = db.run('UPDATE books SET title = @title, isbn = @isbn, author = @author WHERE id = @id', {
+    const result = db.run('UPDATE books SET title = @title, isbn = @isbn, author = @author WHERE id = @bookId', {
         title,
         isbn,
         author,
-        id
+        bookId
     });
 
     if (!result.changes) {
-        throw new ApiError("Unexpected error while updating book.", 500, "internal_server_error");
+        throw new ApiError("Unexpected error while updating book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
     return true;
 }
 
-function remove(bookObj) {
-    const {id} = bookObj;
+function remove(bookId) {
 
-    const bookExists = db.query('SELECT * FROM books WHERE id = @id', {id});
+    const bookExists = db.query('SELECT * FROM books WHERE id = @bookId', {bookId});
     if (!bookExists || bookExists.length === 0) {
-        throw new ApiError(`Book with id ${id} does not exist.`, 400, "invalid_argument");
+        throw new ApiError(`Book with id '${bookId}' does not exist.`, 400, "RESOURCE_NOT_FOUND");
     }
 
-    const result = db.run('DELETE FROM books WHERE id = @id', {id});
+    const result = db.run('DELETE FROM books WHERE id = @bookId', {bookId});
 
     if (!result.changes) {
-        throw new ApiError("Unexpected error while deleting book.", 500, "internal_server_error");
+        throw new ApiError("Unexpected error while deleting book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
     return true;
