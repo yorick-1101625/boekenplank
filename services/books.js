@@ -44,7 +44,7 @@ function create(bookObj) {
         throw new ApiError("Unexpected error while creating book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
-    return true;
+    return getOne(result.lastInsertRowid);
 }
 
 function update(bookId, bookObj) {
@@ -67,7 +67,7 @@ function update(bookId, bookObj) {
         throw new ApiError("Unexpected error while updating book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
-    return true;
+    return getOne(bookId);
 }
 
 function remove(bookId) {
@@ -83,7 +83,7 @@ function remove(bookId) {
         throw new ApiError("Unexpected error while deleting book.", 500, "INTERNAL_SERVER_ERROR");
     }
 
-    return true;
+    return {"deleted": true, "id": bookId};
 }
 
 module.exports = {
